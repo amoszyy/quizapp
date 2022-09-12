@@ -2,6 +2,7 @@ import React from 'react'
 import bgsignup from "../images/bgsignup.jpg"
 import dice from "../images/dicebg.jpg"
 import { useFormik } from 'formik'
+import signup from "../signup.css"
 
 const Signup = () => {
     let formik =useFormik({
