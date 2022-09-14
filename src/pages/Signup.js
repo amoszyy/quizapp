@@ -3,33 +3,57 @@ import bgsignup from "../images/bgsignup.jpg"
 import dice from "../images/dicebg.jpg"
 import { useFormik } from 'formik'
 import signup from "../signup.css"
+import axios from "axios"
 import * as yup from 'yup'
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 
 const Signup = () => {
+
     let formik =useFormik({
         initialValues:{
             firstname:"",
             lastname:"",
             email:"",
             password:""
+           
 
         },
+       
         onSubmit:(values)=>{
-            console.log(values)
+            // console.log(values)
 
         },
         validationSchema:yup.object({
             firstname:yup.string().required("This firstname field is needed").min(5, "Must be greater than 5 fucker"),
-            lastname:yup.string().required("This lastname field is required").min(5, "must be more than 5"),
+            lastname:yup.string().required("This lastname field is required").min(5, "must be more than 5"), 
             email:yup.string().required("invalid email").email("invalid email"),
-            password:yup.string().matches(/^[\w]{5}$/, "must be exactly 5 characters")
+            password:yup.string().matches(/^[\w]{5,}$/, "must be exactly 5 characters")
 
-        })
-    
+        }),
+       
 
         
     })
+
     console.log(formik.errors)
+    let endpoint = "http://localhost:5007/user/signup" 
+    let navigate = useNavigate()
+    const regUser = ()=>{
+        let firstnames = formik.values.firstname
+        let lastnames = formik.values.lastname
+        let email = formik.values.email
+        let password = formik.values.password
+        let userDetails = {firstnames, lastnames, email, password}
+        axios.post(endpoint, userDetails).then((result)=>{
+            console.log(result.data)
+            if(result.data.status)
+            navigate("/login")
+        })
+
+    }
+
+  
    
   return (
     <>
@@ -56,7 +80,7 @@ const Signup = () => {
                   
                 
                    <div className='col-md-12 col-8 mx-auto'>
-                   <button className='btn btn-dark btn-outline-white w-100 h-100 ' type='submit'>signup</button><br />
+                   <button className='btn btn-dark btn-outline-white w-100 h-100 ' type='submit' onClick={regUser}>signup</button><br />
                    <button className='btn btn-success btn-outline-dark col-md-12 col-12 my-2 mx-auto' type='submit'>login</button>
                    </div>
                    </form>
