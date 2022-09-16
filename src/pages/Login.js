@@ -34,9 +34,13 @@ const Login = () => {
     let password = formik.values.password
     let loginDetails = {email, password}
     axios.post(endpointL, loginDetails).then((result)=>{
-      console.log(result.data)
+      console.log(result.data.user._id)
+      let loggedInuser = result.data;
+      console.log(loggedInuser)
+      localStorage.token = loggedInuser.user._id      
       if(result.data.status)
       navigate("/dashboard")
+    
   })
 
   }
