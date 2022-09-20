@@ -20,6 +20,7 @@ const Takequiz = () => {
   const [score, setscore] = useState(0)
   const [questions, setquestions] = useState([])
   const [questionNumber, setquestionNumber] = useState(1)
+  const [finalscore, setfinalscore] = useState(0)
 
   const [uid, setuid] = useState("")
   const [selectedOption, setselectedOption] = useState("")
@@ -50,7 +51,7 @@ const Takequiz = () => {
 
   const showUID =()=>{
    
-    if(selectedOption == questionsObj.correctAnswer){
+    if(selectedOption == questionsObj.correctAnswer && score<questionNumber){
       let scores = score +1
       setscore(scores)
       
@@ -67,15 +68,22 @@ const Takequiz = () => {
       setquestionsObj(questions[a])
       let number = questionNumber + 1
       setquestionNumber(number)
-     
-
     }
    
   
   
   }
   const submitTest = ()=>{
+    if(questionNumber<15){
+      alert("complete test")
 
+    } else{
+      // alert("submitted successfully")
+      let submitscore = score/questionNumber * 100;
+      alert(submitscore)
+      setfinalscore(submitscore)
+    }
+   
   }
 
   // const nextQuestion=()=>{
@@ -100,6 +108,7 @@ const Takequiz = () => {
       
         <div className='container bg-light innerquiz'>
         <div>{score}/{questionNumber}</div>
+        <p>{finalscore}%</p>
           <div>
            <p>{questionNumber}: <span>{questionsObj.question}</span></p>
             a: <input type="radio" onClick={(e)=>setselectedOption(e.target.value)} name='option'  className='btn btn-info' value={questionsObj.optionA}/> <span>{questionsObj.optionA}</span><br />
@@ -108,8 +117,9 @@ const Takequiz = () => {
             d : <input type="radio" onClick={(e)=>setselectedOption(e.target.value)} name='option'  className='btn btn-info' value={questionsObj.optionD}/><span>{questionsObj.optionD}</span><br />
           
           </div>
-          <p>{questionsObj.uid}</p>
-          <button className='btn btn-info shadow' onClick={showUID}><i class="fa-solid fa-forward" ></i></button>
+          
+          <button className='btn btn-info shadow my-2' onClick={showUID}><i class="fa-solid fa-forward" ></i></button>
+          <button className='btn btn-success shadow my-2 ' onClick={submitTest}>submit</button>
          
           
 
