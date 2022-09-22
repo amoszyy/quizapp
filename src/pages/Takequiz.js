@@ -3,6 +3,7 @@ import quizbg from "../images/takequiz.jpg"
 import axios from 'axios'
 import { useEffect } from 'react'
 import { useState } from 'react'
+import Viewscore from './Viewscore'
 
 const Takequiz = () => {
   useEffect(() => {
@@ -36,7 +37,7 @@ const Takequiz = () => {
         setquestions(questionarray)
 
      
-      let a = Math.floor(Math.random()*5)
+      let a = Math.floor(Math.random()*19)
       if(a >=questionarray.length){
         a = 5
       }
@@ -51,7 +52,7 @@ const Takequiz = () => {
 
   const showUID =()=>{
    
-    if(selectedOption == questionsObj.correctAnswer && score<questionNumber){
+    if(selectedOption == questionsObj.correctAnswer && score<questionNumber &&questionNumber<15){
       let scores = score +1
       setscore(scores)
       
@@ -64,7 +65,7 @@ const Takequiz = () => {
     if(questionNumber>15){
       alert("maximum no of questions submit")
     } else{
-      let a = Math.floor(Math.random()*5);
+      let a = Math.floor(Math.random()*19);
       setquestionsObj(questions[a])
       let number = questionNumber + 1
       setquestionNumber(number)
@@ -80,35 +81,22 @@ const Takequiz = () => {
     } else{
       // alert("submitted successfully")
       let submitscore = score/questionNumber * 100;
-      alert(submitscore)
+      // alert(submitscore)
       setfinalscore(submitscore)
     }
    
   }
-
-  // const nextQuestion=()=>{
-    // let a = Math.floor(Math.random()*5);
-    // setquestionsObj(getquestionsarray[a])
-  // }
-  // const checkAnswer = ()=>{
-    // console.log(questionsObj.correctAnswer)
-
-      
-    // let endpointA = "http://localhost:5007/user/checkanswer"
-    // let questiondetails = {uid}
-    // console.log(uid)
-    // axios.post(endpointA, questiondetails).then((result)=>{
-    //   console.log(result)
-    // })
-    
-  // }
   return (
     <>
+   
+   
     <div className='bgquiz'>
       
-        <div className='container bg-light innerquiz'>
+     
+      
+        <div className='container shadow innerquiz'>
         <div>{score}/{questionNumber}</div>
-        <p>{finalscore}%</p>
+        
           <div>
            <p>{questionNumber}: <span>{questionsObj.question}</span></p>
             a: <input type="radio" onClick={(e)=>setselectedOption(e.target.value)} name='option'  className='btn btn-info' value={questionsObj.optionA}/> <span>{questionsObj.optionA}</span><br />
@@ -119,7 +107,7 @@ const Takequiz = () => {
           </div>
           
           <button className='btn btn-info shadow my-2' onClick={showUID}><i class="fa-solid fa-forward" ></i></button>
-          <button className='btn btn-success shadow my-2 ' onClick={submitTest}>submit</button>
+          <button className='btn btn-success shadow my-2 ' data-bs-toggle="modal" data-bs-target="#modelId" onClick={submitTest}>submit</button>
          
           
 
@@ -144,12 +132,36 @@ const Takequiz = () => {
             
 
         </div>
+        
 
     </div>
+    <div className="modal fade" id="modelId" tabindex="-1" role="dialog" aria-labelledby="modelTitleId" aria-hidden="true">
+    <div className="modal-dialog" role="document">
+      <div className="modal-content">
+          <div className="modal-header">
+              <h5 className="modal-title">proceed</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+        <div className="modal-body">
+          <div className="container-fluid">
+            <b style={{color:"green"}} ><p>{finalscore}%</p></b>
+            
+          </div>
+        </div>
+        <div className="modal-footer">
+          <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+    
 
     
 
     </>
+    
   )
 }
 
